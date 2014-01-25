@@ -10,11 +10,28 @@
 #include <cctype>
 
 // ------------------- PUBLIC METHOD DEFINITIONS ----------------------------//
+
+///////////////////////////////////////////////////////////////////////////////
+/// @method Initialize
+///
+/// @details Initializes the scanner.
+///
+/// @return void
+///////////////////////////////////////////////////////////////////////////////
 void Scanner::Initialize()
 {
     
 }
 
+///////////////////////////////////////////////////////////////////////////////
+/// @method ScanOneToken
+///
+/// @details Scans the inputted file and searches for the next token. It then
+/// stores the token into the passed by reference token.
+///
+/// @param *token       The token produced by the scan.
+/// @return void
+///////////////////////////////////////////////////////////////////////////////
 void Scanner::ScanOneToken(Token *token)
 {
     ScannerState curState = start, nextState = start;
@@ -36,6 +53,12 @@ void Scanner::ScanOneToken(Token *token)
                 break;
             case identifier:
                 nextState = this->ProcessIdentifierState(curChar);
+                break;
+            case number:
+                nextState = this->ProcessNumberState(curChar);
+                break;
+            case string:
+                nextState = this->ProcessStringState(curChar);
                 break;
             default:
                 nextState = done;
@@ -85,7 +108,7 @@ Scanner::~Scanner() {
 ///////////////////////////////////////////////////////////////////////////////
 ScannerStateType Scanner::ProcessStartState(char &curChar)
 {
-    char nextChar, idChar;
+    char nextChar, idChar, curDigit;
     
     curChar = getc(this->pFile);
     
@@ -93,6 +116,11 @@ ScannerStateType Scanner::ProcessStartState(char &curChar)
     {
         idChar = curChar;
         curChar = 'L';
+    }
+    else if (isdigit(curChar))
+    {
+        curDigit = curChar;
+        curChar = 'N';
     }
     
     switch (curChar)
@@ -116,6 +144,11 @@ ScannerStateType Scanner::ProcessStartState(char &curChar)
         case 'L':
             curChar = idChar;
             return identifier;
+        case 'N':
+            curChar = curDigit;
+            return number;
+        case '"':
+            return string;
         // Skip white spaces
         case ' ':
             return start;
@@ -183,6 +216,78 @@ ScannerStateType Scanner::ProcessIdentifierState(char curChar)
     
     // TEST Assuming identifiers right now!
     this->curToken.name = T_IDENTIFIER;
+    
+    return done;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+/// @method ProcessNumberState()
+/// @details This method will be called when the state is the number state in 
+/// the finite automata. It will continue reading characters from the file
+/// until it reaches a non digit character. It will write the value of the digits
+/// to the token structure and will update the token name appropriately. 
+/// It will return "done" as its state in order to get the next token.
+///
+/// @return ScannerStateType    The next state of the finite automata.
+/// @retval ScannerState::done
+///////////////////////////////////////////////////////////////////////////////
+ScannerStateType Scanner::ProcessNumberState(char curDigit)
+{
+    this->curToken.attribute.intValue = curDigit - '0';
+    while(isdigit(curDigit = getc(this->pFile)))
+        this->curToken.attribute.intValue = this->curToken.attribute.intValue*10 + curDigit - '0';
+    ungetc(curDigit, this->pFile);
+    // Assume integer type
+    this->curToken.name = T_INTEGER;
+    
+    return done;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+/// @method ProcessStringState()
+/// @details This method will be called when the state is the string state in 
+/// the finite automata. It will continue reading characters from the file
+/// until it reaches a new line or a matching double quote. It will write 
+/// the value of the digits characters to the token structure and will set the
+/// token name appropriately. It will return "done" as its state in order to 
+/// get the next token.
+///
+/// @return ScannerStateType    The next state of the finite automata.
+/// @retval ScannerState::done
+///////////////////////////////////////////////////////////////////////////////
+ScannerStateType Scanner::ProcessStringState(char curChar)
+{
+    int curPos = 0;
+    this->curToken.attribute.stringValue[curPos] = curChar;
+    curPos++;
+    
+    curChar = getc(this->pFile);
+    // Continue getting characters until we don't get a character or underscore
+    while (isalpha(curChar) || isdigit(curChar) || curChar == '_' || 
+            curChar == ',' || curChar == ';' || curChar == ':' || curChar == '.'
+            || curChar == ' ')
+    {
+        if (curChar == '\n')
+        {
+            // We have an error!
+        }
+        this->curToken.attribute.stringValue[curPos] = curChar;
+        curPos++;
+        curChar = getc(this->pFile);
+    }
+    if (curChar == '"')
+    {
+        // TEST Assuming identifiers right now!
+        this->curToken.name = T_STRING;
+        this->curToken.attribute.stringValue[curPos] = curChar;
+    }
+    else
+    {
+        ungetc(curChar,this->pFile);
+        // We have an error here!
+    }
     
     return done;
 }

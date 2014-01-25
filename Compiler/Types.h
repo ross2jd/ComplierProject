@@ -34,6 +34,7 @@ int const STRING_SIZE = 256;
 #define T_END           20
 #define T_EOF           21
 #define T_IDENTIFIER    22
+#define T_INTEGER       23
 
 
 

@@ -53,6 +53,12 @@ private:
     
     /// Process the identifier/reserved word state
     ScannerStateType ProcessIdentifierState(char curChar);
+    
+    /// Process the number state
+    ScannerStateType ProcessNumberState(char curDigit);
+    
+    /// Process the string state
+    ScannerStateType ProcessStringState(char curChar);
 };
 
 #endif	/* SCANNER_H */
