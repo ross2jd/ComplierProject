@@ -7,11 +7,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/B:/Documents/GitHub/CompilerProject/ComplierProject/Compiler/Types.h</file>
-            <file>file:/B:/Documents/GitHub/CompilerProject/ComplierProject/Compiler/main.cpp</file>
-            <file>file:/B:/Documents/GitHub/CompilerProject/ComplierProject/Compiler/Scanner.cpp</file>
-            <file>file:/B:/Documents/GitHub/CompilerProject/ComplierProject/Compiler/Scanner.h</file>
-            <file>file:/B:/Documents/GitHub/CompilerProject/ComplierProject/Compiler/ScannerStates.h</file>
+            <file>file:/D:/GitRepo/Compiler_Project/ComplierProject/Compiler/Error.h</file>
+            <file>file:/D:/GitRepo/Compiler_Project/ComplierProject/Compiler/Scanner.cpp</file>
+            <file>file:/D:/GitRepo/Compiler_Project/ComplierProject/Compiler/Error.cpp</file>
+            <file>file:/D:/GitRepo/Compiler_Project/ComplierProject/Compiler/Scanner.h</file>
+            <file>file:/D:/GitRepo/Compiler_Project/ComplierProject/Compiler/main.cpp</file>
         </group>
     </open-files>
 </project-private>

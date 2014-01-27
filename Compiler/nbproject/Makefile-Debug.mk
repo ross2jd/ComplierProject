@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Error.o \
 	${OBJECTDIR}/Scanner.o \
 	${OBJECTDIR}/main.o
 
@@ -43,8 +44,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-std=c++0x
+CXXFLAGS=-std=c++0x
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -62,6 +63,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/compiler.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/compiler ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/Error.o: Error.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Error.o Error.cpp
 
 ${OBJECTDIR}/Scanner.o: Scanner.cpp 
 	${MKDIR} -p ${OBJECTDIR}

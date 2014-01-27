@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Error.h</itemPath>
       <itemPath>Scanner.h</itemPath>
       <itemPath>ScannerStates.h</itemPath>
       <itemPath>Types.h</itemPath>
@@ -15,6 +16,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Error.cpp</itemPath>
       <itemPath>Scanner.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -39,7 +41,14 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <commandLine>-std=c++0x</commandLine>
+        </ccTool>
       </compileType>
+      <item path="Error.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Error.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Scanner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Scanner.h" ex="false" tool="3" flavor2="0">
@@ -71,6 +80,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Error.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Error.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Scanner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Scanner.h" ex="false" tool="3" flavor2="0">

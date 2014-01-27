@@ -11,8 +11,18 @@
 #include <stdio.h>
 #include "Types.h"
 #include "ScannerStates.h"
+#include "Error.h"
 
-
+///////////////////////////////////////////////////////////////////////////////
+/// @class Scanner
+/// @brief Class for encapsulating the functionality for the scanner 
+/// implementation for compiler
+///
+/// <h1>Design</h1>
+/// This will contain the design for the Scanner class.
+///
+/// @author Jordan Ross
+///////////////////////////////////////////////////////////////////////////////
 class Scanner {
 public:
     //----------------------- PUBLIC METHODS-------------------------//
@@ -25,6 +35,9 @@ public:
     
     // Method to unset all values of the token structure
     void ClearToken(Token *token);
+    
+    // Method to get all scanner Error messages
+    void GetErrorMessages(std::string messages[]);
     
     // Constructor
     Scanner(FILE *fp);
@@ -42,6 +55,15 @@ private:
     
     /// Holds the current token that is being built
     Token curToken;
+    
+    /// Holds the current line number in the file being scanned
+    int curLineNumber;
+    
+    /// Holds the current column number in the file being scanned
+    int curColNumber;
+    
+    /// Holds the object for the Error class.
+    Error* error;
     
     //----------------------- PRIVATE METHODS ------------------------//
     

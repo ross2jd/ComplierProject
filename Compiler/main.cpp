@@ -28,12 +28,19 @@ int main(int argc, char** argv) {
     
     // Open up the file
     FILE *pFile;
-    pFile = fopen("B:/Documents/GitHub/CompilerProject/ComplierProject/test_program.txt", "r");
+    //pFile = fopen("B:/Documents/GitHub/CompilerProject/ComplierProject/test_program.txt", "r");
+    pFile = fopen("D:\\GitRepo\\Compiler_Project\\ComplierProject\\Compiler\\test_program.txt", "r");
+    if (!pFile)
+    {
+        cout << "Could not open specified file!" << endl;
+        return 0;
+    }
     
     // Instantiate a scanner object
     Scanner *scanner = new Scanner(pFile);
     
     // Initialize the scanner
+    scanner->Initialize();
     
     //TEST: Remove the following lines when we have a parser.
     Token allTokens[15];
@@ -64,6 +71,15 @@ int main(int argc, char** argv) {
     
     
     fclose(pFile);
+    
+    // Report any Scanner Errors
+    // TODO: Change this hard coded 20
+    std::string scannerErrorMessages[20];
+    scanner->GetErrorMessages(scannerErrorMessages);
+    for (int i = 0 ; i < 20; i++)
+    {
+        cout << scannerErrorMessages[i] << endl;
+    }
     
     return 0;
 }

@@ -20,7 +20,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 void Scanner::Initialize()
 {
-    
+    // Reset the line number and column numbers
+    this->curLineNumber = 1;
+    this->curColNumber = 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -79,13 +81,20 @@ void Scanner::ClearToken(Token *token)
 {
     token->name = 0;
     token->attribute.doubleValue = 0;
-    memset(token->attribute.stringValue, NULL, sizeof(token->attribute.stringValue));
+    memset(token->attribute.stringValue, 0, sizeof(token->attribute.stringValue));
     token->attribute.intValue = 0;
     token->attribute.opValue = 0;
 }
 
+void Scanner::GetErrorMessages(std::string messages[])
+{
+    this->error->GetErrorMessages(messages);
+}
+
 Scanner::Scanner(FILE *fp) {
     this->pFile = fp;
+    // Create and instance of the Error object for holding the Scanner errors
+    this->error = new Error();
 }
 
 Scanner::Scanner(const Scanner& orig) {
@@ -152,8 +161,9 @@ ScannerStateType Scanner::ProcessStartState(char &curChar)
         // Skip white spaces
         case ' ':
             return start;
-        // Skip newlines
+        // Increment the current line number
         case '\n':
+            this->curLineNumber++;
             return start;
         case EOF:
             this->curToken.name = T_EOF;
@@ -269,10 +279,6 @@ ScannerStateType Scanner::ProcessStringState(char curChar)
             curChar == ',' || curChar == ';' || curChar == ':' || curChar == '.'
             || curChar == ' ')
     {
-        if (curChar == '\n')
-        {
-            // We have an error!
-        }
         this->curToken.attribute.stringValue[curPos] = curChar;
         curPos++;
         curChar = getc(this->pFile);
@@ -287,6 +293,7 @@ ScannerStateType Scanner::ProcessStringState(char curChar)
     {
         ungetc(curChar,this->pFile);
         // We have an error here!
+        this->error->ReportErrorMessage("Invalid String", this->curLineNumber, this->curColNumber);
     }
     
     return done;
