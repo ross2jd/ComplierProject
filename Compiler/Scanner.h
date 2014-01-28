@@ -12,6 +12,7 @@
 #include "Types.h"
 #include "ScannerStates.h"
 #include "Error.h"
+#include "ReservedTable.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @class Scanner
@@ -64,6 +65,9 @@ private:
     
     /// Holds the object for the Error class.
     Error* error;
+    
+    /// Holds the object for the ReservedTable class.
+    ReservedTable* reservedTable;
     
     //----------------------- PRIVATE METHODS ------------------------//
     

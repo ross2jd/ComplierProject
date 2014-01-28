@@ -9,9 +9,12 @@
 #define	TYPES_H
 
 // Define the string size for the identifiers
-int const STRING_SIZE = 256;
+static int const STRING_SIZE = 256;
 
-// Give codes for the recognized reserved words
+// Token type codes for the recognized reserved words
+// Note that these numbers must not change as they are the indecies into the
+// the reserved word table. If more reserved words are added the must follow
+// sequentially.
 #define T_STRING        1
 #define T_INT           2
 #define T_BOOL          3
@@ -32,6 +35,11 @@ int const STRING_SIZE = 256;
 #define T_BEGIN         18
 #define T_RETURN        19
 #define T_END           20
+
+// This number should be equal to the last reserved word token type code + 1
+static int const NUM_RESERVED_WORDS = 21;
+
+// Other Token Types
 #define T_EOF           21
 #define T_IDENTIFIER    22
 #define T_INTEGER       23

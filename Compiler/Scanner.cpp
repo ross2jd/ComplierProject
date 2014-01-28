@@ -14,7 +14,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// @method Initialize
 ///
-/// @details Initializes the scanner.
+/// @details Initializes the scanner by reseting all counters and inserts all
+/// of the reserved words into the the ReservedTable object.
 ///
 /// @return void
 ///////////////////////////////////////////////////////////////////////////////
@@ -23,6 +24,28 @@ void Scanner::Initialize()
     // Reset the line number and column numbers
     this->curLineNumber = 1;
     this->curColNumber = 1;
+    
+    // Setup the reserved table
+    this->reservedTable->InsertEntry("string", T_STRING);
+    this->reservedTable->InsertEntry("int", T_INT);
+    this->reservedTable->InsertEntry("bool", T_BOOL);
+    this->reservedTable->InsertEntry("float", T_FLOAT);
+    this->reservedTable->InsertEntry("global", T_GLOBAL);
+    this->reservedTable->InsertEntry("in", T_IN);
+    this->reservedTable->InsertEntry("out", T_OUT);
+    this->reservedTable->InsertEntry("if", T_IF);
+    this->reservedTable->InsertEntry("then", T_THEN);
+    this->reservedTable->InsertEntry("else", T_ELSE);
+    this->reservedTable->InsertEntry("case", T_CASE);
+    this->reservedTable->InsertEntry("for", T_FOR);
+    this->reservedTable->InsertEntry("and", T_AND);
+    this->reservedTable->InsertEntry("or", T_OR);
+    this->reservedTable->InsertEntry("not", T_NOT);
+    this->reservedTable->InsertEntry("program", T_PROGRAM);
+    this->reservedTable->InsertEntry("procedure", T_PROCEDURE);
+    this->reservedTable->InsertEntry("begin", T_BEGIN);
+    this->reservedTable->InsertEntry("return", T_RETURN);
+    this->reservedTable->InsertEntry("end", T_END);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -81,7 +104,7 @@ void Scanner::ClearToken(Token *token)
 {
     token->name = 0;
     token->attribute.doubleValue = 0;
-    memset(token->attribute.stringValue, 0, sizeof(token->attribute.stringValue));
+    memset(token->attribute.stringValue, '\0', sizeof(token->attribute.stringValue));
     token->attribute.intValue = 0;
     token->attribute.opValue = 0;
 }
@@ -95,6 +118,10 @@ Scanner::Scanner(FILE *fp) {
     this->pFile = fp;
     // Create and instance of the Error object for holding the Scanner errors
     this->error = new Error();
+    
+    // Create an instance of the ReservedTable object for holding the reserved
+    // words.
+    this->reservedTable = new ReservedTable();
 }
 
 Scanner::Scanner(const Scanner& orig) {
@@ -224,8 +251,13 @@ ScannerStateType Scanner::ProcessIdentifierState(char curChar)
     }
     ungetc(curChar, this->pFile);
     
-    // TEST Assuming identifiers right now!
-    this->curToken.name = T_IDENTIFIER;
+    // Check to see if the token is a reserved word
+    this->curToken.name = this->reservedTable->LookupEntry(std::string(this->curToken.attribute.stringValue));
+    if (this->curToken.name == 0)
+    {
+        // The string value was not a reserved word.
+        this->curToken.name = T_IDENTIFIER;
+    }
     
     return done;
 }

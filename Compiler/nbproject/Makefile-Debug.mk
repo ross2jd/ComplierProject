@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Error.o \
+	${OBJECTDIR}/ReservedTable.o \
 	${OBJECTDIR}/Scanner.o \
 	${OBJECTDIR}/main.o
 
@@ -68,6 +69,11 @@ ${OBJECTDIR}/Error.o: Error.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Error.o Error.cpp
+
+${OBJECTDIR}/ReservedTable.o: ReservedTable.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ReservedTable.o ReservedTable.cpp
 
 ${OBJECTDIR}/Scanner.o: Scanner.cpp 
 	${MKDIR} -p ${OBJECTDIR}
