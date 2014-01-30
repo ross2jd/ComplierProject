@@ -11,7 +11,6 @@
 typedef enum ScannerState {
     start,
     identifier,
-    invalidString,
     string,
     number,
     lessThan,
@@ -29,12 +28,13 @@ typedef enum ScannerState {
     rightParen,
     equal,
     leftBracket,
-    rightBracker,
+    rightBracket,
     invalidNot,
     notEqaul,
     divide,
     comment,
-    done
+    done,
+    illegalChar
 }ScannerStateType;
 
 

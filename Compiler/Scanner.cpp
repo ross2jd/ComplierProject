@@ -185,6 +185,34 @@ ScannerStateType Scanner::ProcessStartState(char &curChar)
             return number;
         case '"':
             return string;
+        case '<':
+            return lessThan;
+        case '>':
+            return greatThan;
+        case '!':
+            return invalidNot;
+        case ':':
+            return colon;
+        case ';':
+            return semicolon;
+        case ',':
+            return comma;   
+        case '(':
+            return leftParen;
+        case ')':
+            return rightParen;
+        case '{':
+            return leftBracket;
+        case '}':
+            return rightBracket;
+        case '+':
+            return plus;
+        case '-':
+            return minus;
+        case '*':
+            return astrix;
+        case '=':
+            return equal;
         // Skip white spaces
         case ' ':
             return start;
@@ -195,7 +223,8 @@ ScannerStateType Scanner::ProcessStartState(char &curChar)
         case EOF:
             this->curToken.name = T_EOF;
             return done;
-        
+        default:
+            return illegalChar;
     }
 }
 
@@ -206,7 +235,7 @@ ScannerStateType Scanner::ProcessStartState(char &curChar)
 /// until it reaches a new line. It will return "done" as its state in order
 /// to get the next token.
 ///
-/// @return ScannerStateType    The next state of the finite automata.
+/// @return ScannerStateType    The next tsate of the finite automata.
 /// @retval ScannerState::done
 ///////////////////////////////////////////////////////////////////////////////
 ScannerStateType Scanner::ProcessCommentState()
