@@ -28,8 +28,8 @@ int main(int argc, char** argv) {
     
     // Open up the file
     FILE *pFile;
-    pFile = fopen("B:/Documents/GitHub/CompilerProject/ComplierProject/test_program.txt", "r");
-    //pFile = fopen("D:\\GitRepo\\Compiler_Project\\ComplierProject\\Compiler\\test_program.txt", "r");
+    //pFile = fopen("B:/Documents/GitHub/CompilerProject/ComplierProject/test_program.txt", "r");
+    pFile = fopen("D:\\GitRepo\\Compiler_Project\\ComplierProject\\Compiler\\test_program.txt", "r");
     if (!pFile)
     {
         cout << "Could not open specified file!" << endl;
@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
     scanner->Initialize();
     
     //TEST: Remove the following lines when we have a parser.
-    Token allTokens[15];
+    Token allTokens[30];
     int curToken = 0;
     
     // Create a token structure to pass and fill.

@@ -85,6 +85,12 @@ private:
     
     /// Process the string state
     ScannerStateType ProcessStringState(char curChar);
+    
+    /// Process any operator state
+    ScannerStateType ProcessOperatorState(char curChar, ScannerStateType state);
+    
+    /// Process relative operators among misc tokens
+    ScannerStateType ProcessOtherTokenState(char curChar, ScannerStateType state);
 };
 
 #endif	/* SCANNER_H */

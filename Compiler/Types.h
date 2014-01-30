@@ -44,6 +44,28 @@ static int const NUM_RESERVED_WORDS = 21;
 #define T_IDENTIFIER    22
 #define T_INTEGER       23
 
+// Operator Token Types
+#define T_PLUS          24
+#define T_MINUS         25
+#define T_MUL           26
+#define T_DIV           27
+#define T_EQUAL         28
+
+// Other Token Types
+#define T_LTHAN         29
+#define T_GTHAN         30
+#define T_LTHANEQ       31
+#define T_GTHANEQ       32
+#define T_COLON         33
+#define T_COLONEQ       34
+#define T_NOTEQ         35
+#define T_COMMA         36
+#define T_SEMI          37
+#define T_LBRACKET      38
+#define T_RBRACKET      39
+#define T_LPAREN        40
+#define T_RPAREN        41
+
 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -85,6 +85,23 @@ void Scanner::ScanOneToken(Token *token)
             case string:
                 nextState = this->ProcessStringState(curChar);
                 break;
+            case plus: case minus: case astrix: case divide: case equal:
+                nextState = this->ProcessOperatorState(curChar, curState);
+                break;
+            case lessThan: lessThanEq: case greatThan: case greatThanEq:
+                nextState = this->ProcessOtherTokenState(curChar, curState);
+                break;
+            case colon: case colonEq: case semicolon: case comma: case leftParen:
+                nextState = this->ProcessOtherTokenState(curChar, curState);
+                break;
+            case rightParen: case leftBracket: case rightBracket: case invalidNot:
+                nextState = this->ProcessOtherTokenState(curChar, curState);
+                break;
+            case illegalChar:
+                // We have an error here.
+                this->error->ReportErrorMessage("Illegal character found", this->curLineNumber, this->curColNumber);
+                nextState = done;
+                break;
             default:
                 nextState = done;
                 break;
@@ -360,3 +377,148 @@ ScannerStateType Scanner::ProcessStringState(char curChar)
     return done;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+/// @method ProcessOperatorState()
+/// @details This method will be called when the state is one of the operator
+/// states in the finite automata. It will look at the current character and 
+/// the passed in state and will create a token for the operator.
+///
+/// @return ScannerStateType    The next state of the finite automata.
+/// @retval ScannerState::done
+///////////////////////////////////////////////////////////////////////////////
+ScannerStateType Scanner::ProcessOperatorState(char curChar, ScannerStateType state)
+{
+    switch (state)
+    {
+        case plus:
+            this->curToken.name = T_PLUS;
+            this->curToken.attribute.stringValue[0] = curChar;
+            break;
+        case minus:
+            this->curToken.name = T_MINUS;
+            this->curToken.attribute.stringValue[0] = curChar;
+            break;
+        case astrix:
+            this->curToken.name = T_MUL;
+            this->curToken.attribute.stringValue[0] = curChar;
+            break;
+        case divide:
+            this->curToken.name = T_DIV;
+            this->curToken.attribute.stringValue[0] = curChar;
+            break;
+        case equal:
+            this->curToken.name = T_EQUAL;
+            this->curToken.attribute.stringValue[0] = curChar;
+            break;
+        default:
+            // Throw an exception here. This is not a compiler error but a
+            // programming one.
+            return done;
+    }
+    return done;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+/// @method ProcessOtherTokenState()
+/// @details This method will be called when the state is one of the other
+/// token states in the finite automata. It will look at the current character
+/// and the state that was passed in and create the correct token.
+///
+/// @return ScannerStateType    The next state of the finite automata.
+/// @retval ScannerState::done
+///////////////////////////////////////////////////////////////////////////////
+ScannerStateType Scanner::ProcessOtherTokenState(char curChar, ScannerStateType state)
+{
+    char nextChar;
+    switch(curChar)
+    {
+        case '<':
+            nextChar = getc(this->pFile);
+            if (nextChar == '=')
+            {
+                this->curToken.name = T_LTHANEQ;
+                this->curToken.attribute.stringValue[1] = '=';
+            }
+            else
+            {
+                ungetc(nextChar, this->pFile);
+                this->curToken.name = T_LTHAN;
+            }
+            this->curToken.attribute.stringValue[0] = '<';
+            break;
+        case '>':
+            nextChar = getc(this->pFile);
+            if (nextChar == '=')
+            {
+                this->curToken.name = T_GTHANEQ;
+                this->curToken.attribute.stringValue[1] = '=';
+            }
+            else
+            {
+                ungetc(nextChar, this->pFile);
+                this->curToken.name = T_GTHAN;
+            }
+            this->curToken.attribute.stringValue[0] = '>';
+            break;
+        case ':':
+            nextChar = getc(this->pFile);
+            if (nextChar == '=')
+            {
+                this->curToken.name = T_COLONEQ;
+                this->curToken.attribute.stringValue[1] = '=';
+            }
+            else
+            {
+                ungetc(nextChar, this->pFile);
+                this->curToken.name = T_COLON;
+            }
+            this->curToken.attribute.stringValue[0] = ':';
+            break;
+        case '!':
+            nextChar = getc(this->pFile);
+            if (nextChar == '=')
+            {
+                this->curToken.name = T_NOTEQ;
+                this->curToken.attribute.stringValue[0] = '!';
+                this->curToken.attribute.stringValue[1] = '=';
+            }
+            else
+            {
+                // We have an error for an illegal character
+                ungetc(nextChar, this->pFile);
+                this->error->ReportErrorMessage("Illegal character '!'", this->curLineNumber, this->curColNumber);
+                return done;
+            }
+            break;
+        case '(':
+            this->curToken.name = T_LPAREN;
+            this->curToken.attribute.stringValue[0] = '(';
+            break;
+        case ')':
+            this->curToken.name = T_RPAREN;
+            this->curToken.attribute.stringValue[0] = ')';
+            break;
+        case '{':
+            this->curToken.name = T_LBRACKET;
+            this->curToken.attribute.stringValue[0] = '{';
+            break;
+        case '}':
+            this->curToken.name = T_RBRACKET;
+            this->curToken.attribute.stringValue[0] = '}';
+            break;
+        case ';':
+            this->curToken.name = T_SEMI;
+            this->curToken.attribute.stringValue[0] = ';';
+            break;
+        case ',':
+            this->curToken.name = T_COMMA;
+            this->curToken.attribute.stringValue[0] = ',';
+            break;
+        default:
+            // Throw an exception here. This is not a compiler error but a
+            // programming one.
+            return done;           
+    }
+    return done;
+}
