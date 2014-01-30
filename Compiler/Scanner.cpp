@@ -6,8 +6,12 @@
  */
 
 #include "Scanner.h"
+#include "SymbolTable.h"
 #include <cstring>
 #include <cctype>
+
+// Forward Declarations
+extern SymbolTable* symbolTable;
 
 // ------------------- PUBLIC METHOD DEFINITIONS ----------------------------//
 
@@ -303,6 +307,9 @@ ScannerStateType Scanner::ProcessIdentifierState(char curChar)
     {
         // The string value was not a reserved word.
         this->curToken.name = T_IDENTIFIER;
+        
+        // Insert the symbol into the symbol table
+        symbolTable->InsertSymbol(std::string(this->curToken.attribute.stringValue));
     }
     
     return done;

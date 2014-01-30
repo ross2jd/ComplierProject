@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Error.o \
 	${OBJECTDIR}/ReservedTable.o \
 	${OBJECTDIR}/Scanner.o \
+	${OBJECTDIR}/SymbolTable.o \
 	${OBJECTDIR}/main.o
 
 
@@ -79,6 +80,11 @@ ${OBJECTDIR}/Scanner.o: Scanner.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Scanner.o Scanner.cpp
+
+${OBJECTDIR}/SymbolTable.o: SymbolTable.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SymbolTable.o SymbolTable.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

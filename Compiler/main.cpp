@@ -9,8 +9,12 @@
 #include <iostream>
 #include "Scanner.h"
 #include "Types.h"
+#include "SymbolTable.h"
 
 using namespace std;
+
+/// Global variable for the symbol table.
+SymbolTable* symbolTable = new SymbolTable();
 
 /*
  * 
